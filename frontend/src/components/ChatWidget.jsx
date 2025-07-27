@@ -1,8 +1,109 @@
-// ✅ Komponenta AI chatbota (plovoucí widget)
 import React, { useState } from "react";
 import { sendMessageToBot } from "../utils/api";
 
 export default function ChatWidget() {
+  // 🟢 Vložíme vlastní styly, které budou fungovat i bez Tailwindu
+  const style = `
+    .chat-float {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+    }
+
+    .chat-toggle {
+      background: #2563eb;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 9999px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      border: none;
+    }
+
+    .chat-box {
+      width: 320px;
+      height: 450px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .chat-header {
+      background: #2563eb;
+      color: white;
+      padding: 12px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    .chat-message-user {
+      text-align: right;
+      margin-bottom: 6px;
+    }
+
+    .chat-message-bot {
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .chat-bubble {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 12px;
+      max-width: 80%;
+    }
+
+    .bubble-user {
+      background: #2563eb;
+      color: white;
+    }
+
+    .bubble-bot {
+      background: #f3f4f6;
+      color: black;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+      padding: 8px;
+      gap: 6px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .chat-input button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  `;
+
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -24,58 +125,51 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="chat-float">
+      {/* 🟨 Vložíme stylovací tag */}
+      <style>{style}</style>
+
       {!open ? (
-        <button
-          onClick={() => setOpen(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg"
-        >
+        <button onClick={() => setOpen(true)} className="chat-toggle">
           💬 Chat s námi
         </button>
       ) : (
-        <div className="w-80 h-[450px] bg-white border shadow-xl rounded-lg flex flex-col overflow-hidden">
-          <div className="bg-blue-600 text-white p-3 font-bold flex justify-between items-center">
+        <div className="chat-box">
+          {/* Hlavička */}
+          <div className="chat-header">
             <span>AI Chatbot</span>
             <button onClick={() => setOpen(false)}>✖️</button>
           </div>
 
-          <div className="flex-1 p-3 space-y-2 overflow-y-auto text-sm">
+          {/* Zprávy */}
+          <div className="chat-messages">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
-                className={`${
-                  msg.role === "user" ? "text-right" : "text-left text-gray-700"
-                }`}
+                className={msg.role === "user" ? "chat-message-user" : "chat-message-bot"}
               >
                 <div
-                  className={`inline-block px-3 py-2 rounded-lg ${
-                    msg.role === "user"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-black"
+                  className={`chat-bubble ${
+                    msg.role === "user" ? "bubble-user" : "bubble-bot"
                   }`}
                 >
                   {msg.content}
                 </div>
               </div>
             ))}
-            {loading && <div className="text-gray-400">✍️ Píšu odpověď...</div>}
+            {loading && <div className="chat-message-bot bubble-bot chat-bubble">✍️ Píšu odpověď...</div>}
           </div>
 
-          <div className="p-2 border-t flex gap-2">
+          {/* Input */}
+          <div className="chat-input">
             <input
               type="text"
-              className="flex-1 border rounded px-2 py-1 text-sm"
-              placeholder="Zadej dotaz..."
               value={input}
+              placeholder="Zadej dotaz..."
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
             />
-            <button
-              onClick={handleSend}
-              className="bg-blue-600 text-white px-3 rounded"
-            >
-              ➤
-            </button>
+            <button onClick={handleSend}>➡️</button>
           </div>
         </div>
       )}
