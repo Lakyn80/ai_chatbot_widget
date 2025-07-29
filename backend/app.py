@@ -6,6 +6,11 @@ import os
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})  # ✅ Povolit vše, včetně statických souborů
 
+@app.route("/", methods=["GET"])
+def index():
+    return "✅ AI Chatbot backend je online!"
+
+
 # 🟩 Testovací endpoint
 @app.route("/api/ping", methods=["GET"])
 def ping():
