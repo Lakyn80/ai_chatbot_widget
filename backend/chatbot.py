@@ -1,8 +1,8 @@
-# ✅ Funkce pro komunikaci s DeepSeek API
+# ✅ Funkce pro komunikaci s DeepSeek API – mluví všemi jazyky
 import requests
-from config import DEEPSEEK_API_KEY  # Načtení klíče z configu
+from config import DEEPSEEK_API_KEY  # 🔐 Načtení klíče z configu
 
-# 🧠 URL DeepSeek API endpointu
+# 🌐 URL DeepSeek API
 API_URL = "https://api.deepseek.com/v1/chat/completions"
 
 def get_chatbot_response(message):
@@ -11,18 +11,21 @@ def get_chatbot_response(message):
         "Authorization": f"Bearer {DEEPSEEK_API_KEY}"
     }
 
-    # 🟦 Dotaz ve stylu zákaznické podpory
+    # 🧠 Systémová zpráva s podporou všech jazyků
+    system_prompt = (
+        "Jsi asistent specializovaný na zákaznickou podporu pro naši firmu. "
+        "Odpovídej vždy v jazyce, ve kterém byla položena otázka. "
+        "Odpovídej pouze na otázky týkající se našich služeb a produktů "
+        "(např. palety, big bagy, krabice, doprava apod.). "
+        "Pokud dotaz nesouvisí s firmou, odpověz: 'Na tuto otázku nemohu odpovědět.'"
+    )
+
+    # 🔵 Tělo požadavku
     payload = {
         "model": "deepseek-chat",
         "messages": [
-            {
-                "role": "system",
-                "content": "Odpovídej pouze na otázky týkající se naší firmy a služeb. Pokud dotaz nesouvisí, odpověz 'Na tuto otázku nemohu odpovědět.'"
-            },
-            {
-                "role": "user",
-                "content": message
-            }
+            { "role": "system", "content": system_prompt },
+            { "role": "user", "content": message }
         ],
         "temperature": 0.7
     }
