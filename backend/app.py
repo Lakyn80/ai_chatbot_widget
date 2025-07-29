@@ -3,8 +3,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from chatbot import get_chatbot_response  # Načtení funkce z chatbot.py
 
+# 🟩 Inicializace Flask aplikace
 app = Flask(__name__)
-CORS(app)  # 🟩 Povolení CORS pro frontend komunikaci
+CORS(app)  # Povolení CORS pro frontend komunikaci
 
 # 🟦 Testovací endpoint
 @app.route("/api/ping", methods=["GET"])
@@ -23,3 +24,8 @@ def chat():
     # 🔁 Získání odpovědi z DeepSeek
     response = get_chatbot_response(user_message)
     return jsonify({"response": response})
+
+
+# ✅ Spuštění aplikace (důležité pro VS Code nebo příkaz python app.py)
+if __name__ == "__main__":
+    app.run(debug=True)

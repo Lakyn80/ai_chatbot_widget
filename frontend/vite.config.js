@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   build: {
+    outDir: '../docs', // ✅ GitHub Pages bude číst z /docs složky
     lib: {
       entry: './src/embed.js',
       name: 'ChatbotWidget',
@@ -20,6 +21,6 @@ export default defineConfig({
     },
   },
   define: {
-    'process.env.NODE_ENV': '"production"', // ✅ Tohle je klíčové!
+    'process.env.NODE_ENV': '"production"', // ✅ důležité pro správný build
   },
 });
