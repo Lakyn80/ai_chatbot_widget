@@ -2,46 +2,17 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Chatbot Widget – Demo</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      background-color: #f9fafb;
-    }
-    h1 {
-      color: #2563eb;
-    }
-    .info {
-      margin-top: 1rem;
-      font-size: 0.95rem;
-      color: #555;
-      background: #eef2ff;
-      padding: 1rem;
-      border-radius: 8px;
-      border-left: 4px solid #3b82f6;
-    }
-    code {
-      background: #e5e7eb;
-      padding: 2px 4px;
-      border-radius: 4px;
-      font-size: 0.95rem;
-    }
-  </style>
+  <script src="./chat-widget.js"></script>
+  <script>
+    window.ChatbotWidget.init({
+      title: "Náramková Móda 💬",
+      introMessage: "Vítejte! Jak vám mohu pomoci? 🎀",
+      themeColor: "#ec4899"
+    });
+  </script>
 </head>
 <body>
-  <h1>🧪 Testovací stránka: AI Chatbot Widget</h1>
-  <p>Pokud vše funguje správně, vpravo dole by se měla objevit plovoucí bublina 💬 s AI chatbotem.</p>
-
-  <div class="info">
-    <strong>Vložení do webu:</strong><br/>
-    <code>&lt;script src="https://lakyn80.github.io/ai_chatbot_widget/chat-widget.js"&gt;&lt;/script&gt;</code><br/>
-    <code>&lt;script src="https://lakyn80.github.io/ai_chatbot_widget/init-chat-widget.js"&gt;&lt;/script&gt;</code>
-  </div>
-
-  <!-- ✅ Načtení widgetu a konfigurace -->
-  <script src="https://lakyn80.github.io/ai_chatbot_widget/init-chat-widget.js"></script>
-  <script src="https://lakyn80.github.io/ai_chatbot_widget/chat-widget.js"></script>
+  <h1 style="font-family: sans-serif; padding: 2rem;">🧪 Demo AI Chatbota</h1>
 </body>
 </html>

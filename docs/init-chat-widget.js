@@ -1,8 +1,12 @@
-// 🟩 Tento skript počká, až bude stránka načtená a pak spustí widget
 window.addEventListener("DOMContentLoaded", () => {
   if (window.ChatbotWidget && typeof window.ChatbotWidget.init === "function") {
-    window.ChatbotWidget.init();
+    window.ChatbotWidget.init({
+      title: "Náramková Móda 💬",
+      introMessage: "Vítejte! Jak vám mohu pomoci s výběrem náramku? 🎀",
+      themeColor: "#ec4899"
+    });
+    console.log("✅ ChatbotWidget spuštěn.");
   } else {
-    console.error("❌ ChatbotWidget.init not found.");
+    console.error("❌ ChatbotWidget.init nebyl nalezen.");
   }
 });
