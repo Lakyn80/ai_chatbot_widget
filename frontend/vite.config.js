@@ -1,4 +1,4 @@
-// 📁 vite.config.js
+// 📁 frontend/vite.config.js
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -6,18 +6,18 @@ import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 
 export default defineConfig({
-  base: "/ai_chatbot_widget/", // 📦 důležité pro GitHub Pages
   plugins: [react()],
+  base: "/ai_chatbot_widget/",
   css: {
     postcss: {
       plugins: [tailwindcss(), autoprefixer()],
     },
   },
   build: {
-    outDir: "docs", // 📁 kam se build ukládá
+    outDir: "../docs",
     emptyOutDir: false,
     lib: {
-      entry: path.resolve(__dirname, "src/embed.jsx"), // 📌 embed vstup
+      entry: path.resolve(__dirname, "src/embed.jsx"),
       name: "ChatbotWidget",
       fileName: () => "chat-widget.js",
       formats: ["umd"],
