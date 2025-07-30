@@ -1,3 +1,5 @@
+# 📁 backend/app.py
+
 from flask import Flask, request, jsonify, send_from_directory, make_response
 from flask_cors import CORS
 from chatbot import get_chatbot_response
@@ -6,8 +8,11 @@ import os
 # 🟩 Inicializace aplikace Flask
 app = Flask(__name__)
 
-# 🟦 Povolení CORS pro GitHub Pages (funguje spolehlivě)
-CORS(app, supports_credentials=True, origins=["https://lakyn80.github.io"])
+# 🟦 Povolení CORS pro GitHub Pages i vývojové prostředí localhost (React Vite)
+CORS(app, supports_credentials=True, origins=[
+    "https://lakyn80.github.io",  # ✅ GitHub Pages – produkce
+    "http://localhost:5173"       # ✅ Lokální vývoj – React dev server
+])
 
 # --------------------------------------------
 # ✅ Základní kontrola, že backend běží
