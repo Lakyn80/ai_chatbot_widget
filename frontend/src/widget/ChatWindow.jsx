@@ -1,51 +1,62 @@
+// 📁 frontend/src/widget/ChatWindow.jsx
+
 import React, { useState } from "react";
 
-export default function ChatWindow({ themeColor, introMessage }) {
-  const [messages, setMessages] = useState([{ sender: "bot", text: introMessage }]);
+export default function ChatWindow({ onClose }) {
+  const [messages, setMessages] = useState([
+    { text: "Ahoj! Jak vám mohu pomoci s našimi náramky?", sender: "bot" },
+    {
+      text: "Ano, fungují! Jsem připraven odpovědět na vaše dotazy týkající se produktů a služeb naší firmy.",
+      sender: "bot",
+    },
+  ]);
   const [input, setInput] = useState("");
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+  const handleSend = () => {
+    if (input.trim() === "") return;
 
-    const userMsg = { sender: "user", text: input };
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages([...messages, { text: input, sender: "user" }]);
     setInput("");
-
-    const res = await fetch("https://aichatbotwidget-production.up.railway.app/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input }),
-    });
-
-    const data = await res.json();
-    const botMsg = { sender: "bot", text: data.response };
-    setMessages((prev) => [...prev, botMsg]);
+    // Zde můžeš později přidat odesílání na backend
   };
 
   return (
-    <div className="bg-white p-4 max-w-sm">
-      <div className="space-y-2 mb-3 max-h-60 overflow-y-auto">
-        {messages.map((msg, i) => (
+    <div className="fixed bottom-6 right-6 w-80 max-h-[75vh] bg-white border border-pink-300 rounded-2xl shadow-xl z-50 flex flex-col overflow-hidden">
+      {/* Hlavička */}
+      <div className="bg-pink-600 text-white p-4 font-semibold flex justify-between items-center">
+        <span>🎀 Náramkový asistent</span>
+        <button onClick={onClose} className="text-sm hover:underline">Zavřít</button>
+      </div>
+
+      {/* Zprávy */}
+      <div className="flex-1 p-3 space-y-2 overflow-y-auto bg-pink-50 text-sm">
+        {messages.map((msg, index) => (
           <div
-            key={i}
-            className={`p-2 rounded-xl text-sm ${
-              msg.sender === "user" ? "bg-pink-100 text-right" : "bg-pink-200 text-left"
+            key={index}
+            className={`p-2 rounded-lg ${
+              msg.sender === "bot"
+                ? "bg-pink-100 text-gray-800"
+                : "bg-pink-200 text-right text-black ml-auto"
             }`}
           >
             {msg.text}
           </div>
         ))}
       </div>
-      <div className="flex gap-2">
+
+      {/* Vstup */}
+      <div className="p-3 border-t bg-white flex items-center space-x-2">
         <input
-          className="flex-1 border border-pink-300 rounded-full px-3 py-1 text-sm"
+          type="text"
+          className="flex-1 p-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
+          placeholder="Napište zprávu..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Napište zprávu..."
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
         <button
-          className="bg-pink-500 text-white px-3 py-1 rounded-full text-sm"
-          onClick={sendMessage}
+          onClick={handleSend}
+          className="bg-pink-600 text-white px-4 py-2 rounded-full text-sm hover:bg-pink-500 transition-all"
         >
           Odeslat
         </button>

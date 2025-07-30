@@ -1,33 +1,22 @@
-// 🟣 ChatWidget.jsx – plně funkční bublina s otevřením chatu
+// 📁 frontend/src/widget/ChatWidget.jsx
 
 import React, { useState } from "react";
 import ChatWindow from "./ChatWindow";
 
-export default function ChatWidget({
-  introMessage = "Ahoj! Ráda ti poradím s náramky 😊",
-  themeColor = "#ec4899" // Tailwind pink-500
-}) {
-  const [open, setOpen] = useState(false);
-
-  const toggleChat = () => setOpen(!open);
+export default function ChatWidget() {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      {/* 💬 Bublina vpravo dole */}
-      <div
-        onClick={toggleChat}
-        className="fixed bottom-4 right-4 bg-pink-500 text-white px-4 py-2 rounded-full shadow-lg cursor-pointer z-50"
-        style={{ backgroundColor: themeColor }}
-      >
-        {open ? "Zavřít" : "Chat o náramcích"}
-      </div>
-
-      {/* 🪟 Okno chatu */}
-      {open && (
-        <div className="fixed bottom-16 right-4 z-50">
-          <ChatWindow introMessage={introMessage} themeColor={themeColor} />
-        </div>
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-6 right-6 z-50 bg-pink-600 hover:bg-pink-500 text-white font-semibold px-6 py-3 rounded-full shadow-xl transition-all duration-300"
+        >
+          💬 Chat
+        </button>
       )}
+      {isOpen && <ChatWindow onClose={() => setIsOpen(false)} />}
     </>
   );
 }
