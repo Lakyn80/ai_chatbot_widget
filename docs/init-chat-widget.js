@@ -1,13 +1,8 @@
-// ✅ PŘEPIS původní inicializace – vlastní barva, zpráva, backend
-window.ChatbotWidget = {
-  init: function () {
-    new window.ChatWidget({
-      apiBaseUrl: "https://aichatbotwidget-production.up.railway.app",
-      title: "AI Chatbot",
-      introMessage: "Dobrý den! Rádi vám pomůžeme s výběrem náramku 💝",
-      placeholder: "Zeptej se na cokoliv...",
-      position: "bottom-right",
-      themeColor: "#ec4899" // růžová Tailwind barva
-    });
+// 🟩 Tento skript počká, až bude stránka načtená a pak spustí widget
+window.addEventListener("DOMContentLoaded", () => {
+  if (window.ChatbotWidget && typeof window.ChatbotWidget.init === "function") {
+    window.ChatbotWidget.init();
+  } else {
+    console.error("❌ ChatbotWidget.init not found.");
   }
-};
+});
