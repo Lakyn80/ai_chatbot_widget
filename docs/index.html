@@ -1,11 +1,60 @@
 <!DOCTYPE html>
 <html lang="cs">
-  <head>
-    <meta charset="UTF-8" />
-    <title>AI Chatbot Widget</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/index.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Chatbot Widget – Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ React knihovny z CDN (musí být PŘED chat-widget.js) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- ✅ Vložený JavaScript widget (vygenerovaný build z /docs/chat-widget.js) -->
+  <script src="./chat-widget.js"></script>
+
+  <!-- ✅ Inicializace widgetu po načtení stránky -->
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      if (window.ChatbotWidget && typeof window.ChatbotWidget.init === "function") {
+        window.ChatbotWidget.init({
+          title: "💬 Náramková Móda",
+          introMessage: "Ahoj! Potřebujete poradit s výběrem náramku?",
+          themeColor: "#ec4899"  // růžová barva
+        });
+        console.log("✅ ChatbotWidget spuštěn.");
+      } else {
+        console.error("❌ ChatbotWidget není dostupný.");
+      }
+    });
+  </script>
+
+  <!-- ✅ Základní styl pro demo -->
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background-color: #f9fafb;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #ec4899;
+    }
+
+    .info {
+      margin-top: 1rem;
+      background: #fce7f3;
+      padding: 1rem;
+      border-left: 4px solid #ec4899;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎀 AI Chatbot – Náramková Móda</h1>
+  <p>Vpravo dole se objeví růžová bublina s AI asistentem.</p>
+  <div class="info">
+    Tento widget je načtený z <code>chat-widget.js</code> a komunikuje s backendem přes API.
+  </div>
+</body>
 </html>
