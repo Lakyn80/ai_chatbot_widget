@@ -3,41 +3,56 @@ from flask_cors import CORS
 from chatbot import get_chatbot_response
 import os
 
+# 🟩 Inicializace aplikace Flask
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})  # ✅ Povolit vše, včetně statických souborů
 
+# 🟦 Povolení CORS pro GitHub Pages (funguje spolehlivě)
+CORS(app, supports_credentials=True, origins=["https://lakyn80.github.io"])
+
+# --------------------------------------------
+# ✅ Základní kontrola, že backend běží
+# --------------------------------------------
 @app.route("/", methods=["GET"])
 def index():
     return "✅ AI Chatbot backend je online!"
 
-
-# 🟩 Testovací endpoint
+# --------------------------------------------
+# 🟩 Testovací endpoint (pro debug)
+# --------------------------------------------
 @app.route("/api/ping", methods=["GET"])
 def ping():
     return jsonify({"message": "Server běží správně."})
 
-# 🟥 Chat endpoint
+# --------------------------------------------
+# 🟥 Hlavní endpoint pro AI chatbota
+# --------------------------------------------
 @app.route("/api/chat", methods=["POST"])
 def chat():
     data = request.get_json()
     user_message = data.get("message", "")
 
+    # 🔴 Kontrola, zda je zpráva neprázdná
     if not user_message.strip():
         return jsonify({"error": "Zpráva nesmí být prázdná"}), 400
 
+    # 🧠 Získání odpovědi z AI
     response = get_chatbot_response(user_message)
     return jsonify({"response": response})
 
-# ✅ Endpoint pro statický widget (chat-widget.js)
+# --------------------------------------------
+# 🟦 Slouží statický JavaScript soubor pro widget
+# --------------------------------------------
 @app.route("/chat-widget.js")
 def serve_widget():
     widget_path = os.path.join(os.path.dirname(__file__), 'frontend', 'dist')
     response = make_response(send_from_directory(widget_path, "chat-widget.js"))
     response.headers["Content-Type"] = "application/javascript"
-    response.headers["Access-Control-Allow-Origin"] = "*"  # ✅ Důležité pro widget
+    response.headers["Access-Control-Allow-Origin"] = "*"  # 🔐 Widget může být načten z GitHubu
     return response
 
-# ✅ Spuštění
+# --------------------------------------------
+# 🟢 Spuštění serveru
+# --------------------------------------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
