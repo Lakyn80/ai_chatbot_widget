@@ -1,32 +1,37 @@
-// 📁 vite.config.js
-
+import path from "path"; // 🟩 To bylo chybějící dřív
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path"; // ✅ DŮLEŽITÉ: přidáno kvůli path.resolve
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/ai_chatbot_widget/", // ✅ cesta pro GitHub Pages
+  base: "/ai_chatbot_widget/",
+  css: {
+    postcss: {
+      plugins: [tailwindcss(), autoprefixer()],
+    },
+  },
   build: {
-    outDir: "../docs",         // ✅ výstup do /docs pro GitHub Pages
-    emptyOutDir: false,        // ✅ nezmazat celý docs při buildu
+    outDir: "../docs",
+    emptyOutDir: false,
     lib: {
-      entry: path.resolve(__dirname, "src/embed.jsx"),  // ✅ vstupní soubor
+      entry: path.resolve(__dirname, "src/embed.jsx"),
       name: "ChatbotWidget",
       fileName: () => "chat-widget.js",
-      formats: ["umd"],        // ✅ univerzální modul pro použití přes <script>
+      formats: ["umd"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],  // ✅ React a ReactDOM se očekávají globálně
+      external: ["react", "react-dom"],
       output: {
         globals: {
           react: "React",
-          "react-dom": "ReactDOM"
-        }
-      }
-    }
+          "react-dom": "ReactDOM",
+        },
+      },
+    },
   },
   define: {
-    "process.env.NODE_ENV": '"production"', // ✅ náhrada env proměnné pro build
-  }
+    "process.env.NODE_ENV": '"production"',
+  },
 });
