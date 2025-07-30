@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Chatbot Widget – Bez CDN</title>
+
+  <!-- ✅ Už nepotřebuješ žádné React knihovny zvenku -->
+  <script src="https://lakyn80.github.io/ai_chatbot_widget/chat-widget.js"></script>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      if (window.ChatbotWidget && typeof window.ChatbotWidget.init === "function") {
+        window.ChatbotWidget.init({
+          title: "Náramková Móda 💬",
+          introMessage: "Vítejte! Jak vám mohu pomoci s výběrem náramku?",
+          themeColor: "#ec4899"
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <h1>Test AI Chatu</h1>
+  <p>Widget bude fungovat naprosto samostatně 💬</p>
+</body>
+</html>

@@ -1,42 +1,29 @@
-// 📁 frontend/vite.config.js
+// 📁 vite.config.js
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-
-  // 🌐 Adresář GitHub Pages (název repozitáře)
   base: "/ai_chatbot_widget/",
-
   build: {
-    // 📁 Výstupní složka pro GitHub Pages
     outDir: "../docs",
-
-    // ✅ ZABRÁNÍ smazání vlastních souborů jako index.html nebo init-chat-widget.js
     emptyOutDir: false,
-
-    // ⚙️ Build knihovny jako IIFE (pro <script src="...">)
     lib: {
-      entry: "./src/embed.jsx",     // Vstupní bod pro widget
-      name: "ChatbotWidget",        // Globální název: window.ChatbotWidget
+      entry: "./src/embed.jsx",
+      name: "ChatbotWidget",
       fileName: () => "chat-widget.js",
-      formats: ["iife"]
+      formats: ["umd"] // ✅ UMD místo IIFE
     },
-
     rollupOptions: {
-      // 📦 Tyto knihovny NEbudou zabaleny do výsledného souboru
-      external: ["react", "react-dom", "react-dom/client"],
+      external: ["react", "react-dom"], // ✅ nepřibaluj React
       output: {
         globals: {
           react: "React",
-          "react-dom": "ReactDOM",
-          "react-dom/client": "ReactDOM"
+          "react-dom": "ReactDOM"
         }
       }
     }
   },
-
-  // 🧠 Předání environment proměnných (např. pro React 19 warningy)
   define: {
     "process.env.NODE_ENV": '"production"',
   }

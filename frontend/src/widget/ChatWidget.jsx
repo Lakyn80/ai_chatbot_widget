@@ -1,13 +1,26 @@
+// frontend/src/components/ChatWidget.jsx
 import React from "react";
-import ChatWindow from "./ChatWindow";
 
-export default function ChatWidget({ themeColor = "#ec4899", title = "AI Náramek", introMessage }) {
+export default function ChatWidget({ title = "Chat", introMessage = "Jak vám mohu pomoci?", themeColor = "#ec4899" }) {
   return (
-    <div className="fixed bottom-4 right-4 z-50 shadow-lg rounded-xl border border-pink-400">
-      <div className="bg-pink-500 text-white font-semibold px-4 py-2 rounded-t-xl">
-        {title}
-      </div>
-      <ChatWindow themeColor={themeColor} introMessage={introMessage} />
+    <div
+      style={{
+        position: "fixed",
+        bottom: "20px",
+        right: "20px",
+        backgroundColor: themeColor,
+        color: "white",
+        padding: "1rem",
+        borderRadius: "1rem",
+        boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+        maxWidth: "300px",
+        zIndex: 9999,
+        fontFamily: "sans-serif"
+      }}
+    >
+      <strong>{title}</strong>
+      <p style={{ marginTop: "0.5rem" }}>{introMessage}</p>
+      {/* Místo pro budoucí zprávy a input */}
     </div>
   );
 }

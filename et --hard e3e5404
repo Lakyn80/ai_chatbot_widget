@@ -1,0 +1,30 @@
+[33m9441c5e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m � Force commit všech změn v /docs
+[33mca35f8d[m � Tvrdý rebuild widgetu a aktualizace GitHub Pages
+[33me3e5404[m �️ Obnovený index.html v docs pro GitHub Pages
+[33md59c4a7[m � Úprava index.html, vite.config.js a přidání build.sh
+[33mc7c6172[m  Build pro GitHub Pages
+[33m6e70060[m ✅ Oprava index.html pro demo widgetu
+[33m03e6f07[m[33m ([m[1;33mtag: [m[1;33mv1.0[m[33m)[m ✅ Funkční verze AI chatbot widget
+[33m57f9ffb[m �� Nový build chatbot widgetu
+[33m9a062a8[m ✅ Oprava CORS pro GitHub Pages
+[33m88d64cc[m � fix: obnova index.html pro GitHub Pages
+[33mfe4a1d9[m � build: přepsání widgetu v docs (pro GitHub Pages)
+[33m44d5085[m fix: napojení widgetu na vlastní init s barvou a zprávou
+[33mfb0b969[m force rebuild GitHub Pages
+[33mea59505[m build: správný výstup widgetu do docs/
+[33m7a1b641[m rebuild: trigger GH Pages redeploy
+[33m4aff0d1[m rebuild: trigger GH Pages update_2
+[33m56ba11d[m rebuild: trigger GH Pages update
+[33m71b7faf[m build: nový export widgetu do docs + aktualizace embed.jsx
+[33mcdd5309[m � Přidán widget route + CORS + root route
+[33m4edd47f[m �️ Přidána detekce jazykových dotazů a kladná odpověď
+[33m0b46883[m adding languages
+[33m8b6c8cc[m Oprava portu a správná verze gunicorn pro Railway
+[33m7f4b744[m Fix: downgraded gunicorn to 20.1.0 for Railway deploy
+[33m7d6323a[m Přesun a přejmenování Procfile do backendu
+[33m4eac2b9[m Přidání requirements.txt a Procfile pro Railway
+[33m167e5a0[m Deploy widget na GitHub Pages
+[33m3b80f2e[m Přesun test.html a potvrzení pro Pages
+[33me362b72[m � Deploy chat-widget to GitHub Pages
+[33mde0bf7d[m test_widget
+[33m78278bc[m � First working version of AI chatbot (Flask + React Widget)
