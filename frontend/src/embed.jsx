@@ -1,40 +1,48 @@
-// ✅ Import React a ReactDOM (bude dostupný z externího CDN – viz vite.config.js)
+// 📁 frontend/src/embed.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
+import ChatWindow from "./widget/ChatWidget";  // ✅ Správná cesta – používáme ChatWindow
 
-// ✅ Hlavní komponenta chatu
-import ChatWidget from "./components/ChatWidget";
-
-// 🟢 Globální objekt widgetu – dostupný z <script> v HTML
+// 🟢 Globální objekt, který lze spustit z HTML (např. přes window.ChatbotWidget.init({...}))
 window.ChatbotWidget = {
-  // 🟩 Spuštění widgetu s volitelnými parametry
   init: (options = {}) => {
-    // Pokud widget už existuje, nespouštěj znovu
+    // ❌ Zamezíme duplikaci
     if (document.getElementById("chatbot-widget-container")) return;
 
-    // 🧱 Vytvoření kontejneru pro React komponentu
+    // 🔲 Vytvoření kontejneru
     const el = document.createElement("div");
     el.id = "chatbot-widget-container";
+    el.style.position = "fixed";
+    el.style.bottom = "24px";
+    el.style.right = "24px";
+    el.style.zIndex = "9999";
+    el.style.boxShadow = "0 0 10px rgba(0,0,0,0.15)";
+    el.style.borderRadius = "16px";
+    el.style.overflow = "hidden";
     document.body.appendChild(el);
 
-    // 🔄 React root + render komponenty
+    // 🧠 Vykreslení React komponenty
     const root = ReactDOM.createRoot(el);
-    root.render(<ChatWidget {...options} />);
+    root.render(
+      <ChatWindow
+        themeColor={options.themeColor || "#ec4899"} // Výchozí růžová
+        introMessage={options.introMessage || "Ahoj! Jak vám mohu pomoci s našimi náramky?"}
+      />
+    );
   },
 
-  // 🔴 Volitelná funkce pro odstranění widgetu
   destroy: () => {
     const el = document.getElementById("chatbot-widget-container");
     if (el) {
-      ReactDOM.createRoot(el).unmount(); // Odstranění komponenty z DOMu
-      el.remove(); // Odstranění kontejneru
+      ReactDOM.createRoot(el).unmount();
+      el.remove();
     }
   }
 };
 
-// ⚙️ Automatická inicializace po načtení stránky (pokud není ruční volání)
+// ✅ Pokud se `init` nespustí z HTML skriptu, spustíme automaticky
 window.addEventListener("DOMContentLoaded", () => {
-  if (window.ChatbotWidget && typeof window.ChatbotWidget.init === "function") {
+  if (window.ChatbotWidget && !document.getElementById("chatbot-widget-container")) {
     window.ChatbotWidget.init();
   }
 });
