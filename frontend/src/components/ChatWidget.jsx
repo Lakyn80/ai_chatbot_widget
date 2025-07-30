@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-// ✅ Backend URL z .env.production (VITE_API_URL)
+// ✅ URL backendu načtená z prostředí (.env.production)
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ChatWidget() {
-  // 🟢 Vlastní styly bez závislosti na Tailwindu
+  // 🎨 Vlastní stylizace (růžová a jemný vzhled)
   const style = `
     .chat-float {
       position: fixed;
@@ -14,7 +14,7 @@ export default function ChatWidget() {
     }
 
     .chat-toggle {
-      background: #2563eb;
+      background: #ec4899;
       color: white;
       padding: 10px 16px;
       border-radius: 9999px;
@@ -37,7 +37,7 @@ export default function ChatWidget() {
     }
 
     .chat-header {
-      background: #2563eb;
+      background: #ec4899;
       color: white;
       padding: 12px;
       font-weight: bold;
@@ -71,12 +71,12 @@ export default function ChatWidget() {
     }
 
     .bubble-user {
-      background: #2563eb;
+      background: #ec4899;
       color: white;
     }
 
     .bubble-bot {
-      background: #f3f4f6;
+      background: #fce7f3;
       color: black;
     }
 
@@ -96,7 +96,7 @@ export default function ChatWidget() {
     }
 
     .chat-input button {
-      background: #2563eb;
+      background: #ec4899;
       color: white;
       border: none;
       border-radius: 6px;
@@ -106,12 +106,12 @@ export default function ChatWidget() {
     }
   `;
 
-  const [open, setOpen] = useState(false);            // 🟨 Otevřený/zavřený chat
-  const [messages, setMessages] = useState([]);        // 🟩 Historie zpráv
-  const [input, setInput] = useState("");              // 🟧 Text ve vstupu
-  const [loading, setLoading] = useState(false);       // 🔵 Načítání odpovědi
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // 🟦 Odeslání zprávy na backend
+  // 🧠 Odeslání dotazu na backend
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -128,13 +128,11 @@ export default function ChatWidget() {
       });
 
       const data = await response.json();
-      const botReply = data.response || "❌ Odpověď se nepodařilo načíst.";
-
-      const botMsg = { role: "bot", content: botReply };
+      const botMsg = { role: "bot", content: data.response || "❌ Odpověď se nepodařilo načíst." };
       setMessages((prev) => [...prev, botMsg]);
-    } catch (err) {
-      const errorMsg = { role: "bot", content: "⚠️ Chyba při komunikaci s API." };
-      setMessages((prev) => [...prev, errorMsg]);
+    } catch (error) {
+      const errMsg = { role: "bot", content: "⚠️ Chyba při komunikaci s API." };
+      setMessages((prev) => [...prev, errMsg]);
     }
 
     setLoading(false);
@@ -142,33 +140,26 @@ export default function ChatWidget() {
 
   return (
     <div className="chat-float">
-      {/* 💅 Vložené CSS */}
       <style>{style}</style>
 
       {!open ? (
-        <button onClick={() => setOpen(true)} className="chat-toggle">
-          💬 Chat s námi
+        <button className="chat-toggle" onClick={() => setOpen(true)}>
+          💬 Zeptejte se nás
         </button>
       ) : (
         <div className="chat-box">
-          {/* 🔷 Hlavička */}
           <div className="chat-header">
-            <span>AI Chatbot</span>
+            <span>Náramková Móda 💬</span>
             <button onClick={() => setOpen(false)}>✖️</button>
           </div>
 
-          {/* 💬 Zprávy */}
           <div className="chat-messages">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
                 className={msg.role === "user" ? "chat-message-user" : "chat-message-bot"}
               >
-                <div
-                  className={`chat-bubble ${
-                    msg.role === "user" ? "bubble-user" : "bubble-bot"
-                  }`}
-                >
+                <div className={`chat-bubble ${msg.role === "user" ? "bubble-user" : "bubble-bot"}`}>
                   {msg.content}
                 </div>
               </div>
@@ -180,12 +171,11 @@ export default function ChatWidget() {
             )}
           </div>
 
-          {/* 📝 Vstupní pole */}
           <div className="chat-input">
             <input
               type="text"
+              placeholder="Zadejte dotaz..."
               value={input}
-              placeholder="Zadej dotaz..."
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
             />
