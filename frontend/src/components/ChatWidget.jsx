@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { sendMessageToBot } from "../utils/api";
+
+// ✅ Backend URL z .env.production (VITE_API_URL)
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ChatWidget() {
-  // 🟢 Vložíme vlastní styly, které budou fungovat i bez Tailwindu
+  // 🟢 Vlastní styly bez závislosti na Tailwindu
   const style = `
     .chat-float {
       position: fixed;
@@ -104,11 +106,12 @@ export default function ChatWidget() {
     }
   `;
 
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);            // 🟨 Otevřený/zavřený chat
+  const [messages, setMessages] = useState([]);        // 🟩 Historie zpráv
+  const [input, setInput] = useState("");              // 🟧 Text ve vstupu
+  const [loading, setLoading] = useState(false);       // 🔵 Načítání odpovědi
 
+  // 🟦 Odeslání zprávy na backend
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -117,16 +120,29 @@ export default function ChatWidget() {
     setInput("");
     setLoading(true);
 
-    const botReply = await sendMessageToBot(input);
-    const botMsg = { role: "bot", content: botReply };
+    try {
+      const response = await fetch(`${API_URL}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      });
 
-    setMessages((prev) => [...prev, botMsg]);
+      const data = await response.json();
+      const botReply = data.response || "❌ Odpověď se nepodařilo načíst.";
+
+      const botMsg = { role: "bot", content: botReply };
+      setMessages((prev) => [...prev, botMsg]);
+    } catch (err) {
+      const errorMsg = { role: "bot", content: "⚠️ Chyba při komunikaci s API." };
+      setMessages((prev) => [...prev, errorMsg]);
+    }
+
     setLoading(false);
   };
 
   return (
     <div className="chat-float">
-      {/* 🟨 Vložíme stylovací tag */}
+      {/* 💅 Vložené CSS */}
       <style>{style}</style>
 
       {!open ? (
@@ -135,13 +151,13 @@ export default function ChatWidget() {
         </button>
       ) : (
         <div className="chat-box">
-          {/* Hlavička */}
+          {/* 🔷 Hlavička */}
           <div className="chat-header">
             <span>AI Chatbot</span>
             <button onClick={() => setOpen(false)}>✖️</button>
           </div>
 
-          {/* Zprávy */}
+          {/* 💬 Zprávy */}
           <div className="chat-messages">
             {messages.map((msg, idx) => (
               <div
@@ -157,10 +173,14 @@ export default function ChatWidget() {
                 </div>
               </div>
             ))}
-            {loading && <div className="chat-message-bot bubble-bot chat-bubble">✍️ Píšu odpověď...</div>}
+            {loading && (
+              <div className="chat-message-bot bubble-bot chat-bubble">
+                ✍️ Píšu odpověď...
+              </div>
+            )}
           </div>
 
-          {/* Input */}
+          {/* 📝 Vstupní pole */}
           <div className="chat-input">
             <input
               type="text"

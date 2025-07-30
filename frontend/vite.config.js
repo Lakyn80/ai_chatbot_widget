@@ -9,7 +9,7 @@ export default defineConfig({
     outDir: "../docs", // 👈 Výstup pro GitHub Pages
     emptyOutDir: true,
     lib: {
-      entry: "./src/embed.js", // 👈 Entry point widgetu
+      entry: "./src/embed.jsx", // 👈 Entry point widgetu
       name: "ChatbotWidget",
       fileName: () => "chat-widget.js",
       formats: ["iife"],
