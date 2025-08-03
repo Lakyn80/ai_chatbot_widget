@@ -1,185 +1,82 @@
 import React, { useState } from "react";
 
-// ✅ URL backendu načtená z prostředí (.env.production)
-const API_URL = import.meta.env.VITE_API_URL;
-
-export default function ChatWidget() {
-  // 🎨 Vlastní stylizace (růžová a jemný vzhled)
-  const style = `
-    .chat-float {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 9999;
-    }
-
-    .chat-toggle {
-      background: #ec4899;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 9999px;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      border: none;
-    }
-
-    .chat-box {
-      width: 320px;
-      height: 450px;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    }
-
-    .chat-header {
-      background: #ec4899;
-      color: white;
-      padding: 12px;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .chat-messages {
-      flex: 1;
-      padding: 12px;
-      overflow-y: auto;
-      font-size: 14px;
-    }
-
-    .chat-message-user {
-      text-align: right;
-      margin-bottom: 6px;
-    }
-
-    .chat-message-bot {
-      text-align: left;
-      margin-bottom: 6px;
-    }
-
-    .chat-bubble {
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 12px;
-      max-width: 80%;
-    }
-
-    .bubble-user {
-      background: #ec4899;
-      color: white;
-    }
-
-    .bubble-bot {
-      background: #fce7f3;
-      color: black;
-    }
-
-    .chat-input {
-      display: flex;
-      border-top: 1px solid #ddd;
-      padding: 8px;
-      gap: 6px;
-    }
-
-    .chat-input input {
-      flex: 1;
-      padding: 6px 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    .chat-input button {
-      background: #ec4899;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-  `;
-
+// ✅ Přidáno apiBaseUrl jako vstupní prop
+export default function ChatWidget({
+  themeColor = "#ec4899",
+  introMessage = "Ahoj! Jak vám mohu pomoci s našimi náramky?",
+  apiBaseUrl = "https://aichatbotwidget-production.up.railway.app", // výchozí fallback
+}) {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([{ from: "bot", text: introMessage }]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  // 🧠 Odeslání dotazu na backend
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    const userMsg = { role: "user", content: input };
+    const userMsg = { from: "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
-    setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/chat`, {
+      const res = await fetch(`${apiBaseUrl}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
       });
 
-      const data = await response.json();
-      const botMsg = { role: "bot", content: data.response || "❌ Odpověď se nepodařilo načíst." };
+      const data = await res.json();
+      const botMsg = { from: "bot", text: data.response };
       setMessages((prev) => [...prev, botMsg]);
-    } catch (error) {
-      const errMsg = { role: "bot", content: "⚠️ Chyba při komunikaci s API." };
-      setMessages((prev) => [...prev, errMsg]);
+    } catch (err) {
+      setMessages((prev) => [...prev, { from: "bot", text: "❌ Chyba při komunikaci se serverem." }]);
     }
-
-    setLoading(false);
   };
 
   return (
-    <div className="chat-float">
-      <style>{style}</style>
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full shadow-lg fixed bottom-4 right-4 z-[9999]"
+      >
+        {open ? "Zavřít" : "💬 Chat"}
+      </button>
 
-      {!open ? (
-        <button className="chat-toggle" onClick={() => setOpen(true)}>
-          💬 Zeptejte se nás
-        </button>
-      ) : (
-        <div className="chat-box">
-          <div className="chat-header">
-            <span>Náramková Móda 💬</span>
-            <button onClick={() => setOpen(false)}>✖️</button>
+      {open && (
+        <div className="w-80 h-[480px] bg-white border border-pink-300 rounded-2xl fixed bottom-20 right-4 z-[9999] flex flex-col overflow-hidden shadow-xl">
+          <div className="bg-pink-500 text-white text-center py-2 font-semibold">
+            🤖 Náramkový Asistent
           </div>
 
-          <div className="chat-messages">
-            {messages.map((msg, idx) => (
+          <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-pink-50 text-sm">
+            {messages.map((msg, i) => (
               <div
-                key={idx}
-                className={msg.role === "user" ? "chat-message-user" : "chat-message-bot"}
+                key={i}
+                className={`px-4 py-2 rounded-2xl max-w-[85%] ${
+                  msg.from === "user" ? "ml-auto bg-pink-200 text-right" : "mr-auto bg-white border border-pink-200"
+                }`}
               >
-                <div className={`chat-bubble ${msg.role === "user" ? "bubble-user" : "bubble-bot"}`}>
-                  {msg.content}
-                </div>
+                {msg.text}
               </div>
             ))}
-            {loading && (
-              <div className="chat-message-bot bubble-bot chat-bubble">
-                ✍️ Píšu odpověď...
-              </div>
-            )}
           </div>
 
-          <div className="chat-input">
-            <input
-              type="text"
-              placeholder="Zadejte dotaz..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            />
-            <button onClick={handleSend}>➡️</button>
+          <div className="p-3 bg-white border-t border-pink-200">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                className="flex-1 px-3 py-2 border border-pink-300 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm"
+                placeholder="Napište zprávu…"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              />
+              <button
+                onClick={handleSend}
+                className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full text-sm"
+              >
+                Odeslat
+              </button>
+            </div>
           </div>
         </div>
       )}
