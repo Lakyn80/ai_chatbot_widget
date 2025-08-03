@@ -1,4 +1,3 @@
-// 📁 frontend/src/components/ChatWidget.jsx
 import React, { useState } from "react";
 
 export default function ChatWidget({

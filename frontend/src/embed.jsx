@@ -1,20 +1,17 @@
-// 📁 frontend/src/embed.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import ChatWidget from "./components/ChatWidget";
-import "./widget.css"; // ✅ pokud máš styly navíc, jinak smaž
+import "./widget.css"; // Nech nebo smaž – dle potřeby
 
-// 🟢 Globální widget pro volání přes <script>
+// 🟢 Globální widget pro script embed
 window.ChatbotWidget = {
-  init: (options = {}) => {
-    // Neopakovatelné vložení do DOM
+  init: () => {
     if (document.getElementById("chatbot-widget-container")) return;
-
     const el = document.createElement("div");
     el.id = "chatbot-widget-container";
     document.body.appendChild(el);
 
-    // 🟢 Renderujeme přesně ten tvůj komponent
-    ReactDOM.createRoot(el).render(<ChatWidget {...options} />);
+    // ✅ Používáme výchozí vzhled z ChatWidget.jsx – žádné props
+    ReactDOM.createRoot(el).render(<ChatWidget />);
   },
 };
