@@ -7,24 +7,28 @@ import autoprefixer from "autoprefixer";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/ai_chatbot_widget/", // ✅ GitHub Pages base path
+  base: "/ai_chatbot_widget/", // ✅ cesta pro GitHub Pages
+
   css: {
     postcss: {
       plugins: [tailwindcss(), autoprefixer()],
     },
   },
+
   build: {
-    outDir: "../docs",         // ✅ Vygeneruje do /docs
-    emptyOutDir: true,         // ✅ Smaže předchozí build
-    sourcemap: true,           // 🟢 Volitelně pro ladění
+    outDir: "../docs",       // ✅ build jde do složky /docs
+    emptyOutDir: false,      // ✅ nechá tam tvůj vlastní index.html naživu
+    sourcemap: true,         // 🟢 zdroj mapy pro ladění
+
     lib: {
-      entry: path.resolve(__dirname, "src/embed.jsx"),
-      name: "ChatbotWidget",
-      fileName: () => "chat-widget.js",
-      formats: ["umd"],
+      entry: path.resolve(__dirname, "src/embed.jsx"), // ✅ vstup = React widget
+      name: "ChatbotWidget",                           // ✅ název globální proměnné
+      fileName: () => "chat-widget.js",                // ✅ výstupní název souboru
+      formats: ["umd"],                                // ✅ univerzální modul pro <script>
     },
+
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom"], // ✅ nebalíme React – načítá se z CDN
       output: {
         globals: {
           react: "React",
@@ -33,6 +37,7 @@ export default defineConfig({
       },
     },
   },
+
   define: {
     "process.env.NODE_ENV": '"production"',
   },
