@@ -3,8 +3,8 @@ import React, { useState } from "react";
 
 export default function ChatWidget({
   themeColor = "#ec4899",
-  title = "🤖 AI Asistent",
-  introMessage = "Ahoj! Jak vám mohu pomoci?",
+  title = "💎 Náramková Móda",
+  introMessage = "Ahoj! Potřebuješ poradit s výběrem náramku?",
   apiBaseUrl = "https://aichatbotwidget-production.up.railway.app",
 }) {
   const [open, setOpen] = useState(false);
@@ -23,7 +23,6 @@ export default function ChatWidget({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
       });
-
       const data = await res.json();
       setMessages((prev) => [...prev, { from: "bot", text: data.response }]);
     } catch {
@@ -45,7 +44,6 @@ export default function ChatWidget({
           <div className="text-white text-center py-2 font-semibold" style={{ backgroundColor: themeColor }}>
             {title}
           </div>
-
           <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-pink-50 text-sm">
             {messages.map((msg, i) => (
               <div
@@ -60,7 +58,6 @@ export default function ChatWidget({
               </div>
             ))}
           </div>
-
           <div className="p-3 bg-white border-t border-pink-200">
             <div className="flex gap-2">
               <input

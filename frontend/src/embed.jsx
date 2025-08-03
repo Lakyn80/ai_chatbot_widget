@@ -7,11 +7,9 @@ import "./widget.css";
 window.ChatbotWidget = {
   init: (options = {}) => {
     if (document.getElementById("chatbot-widget-container")) return;
-
-    const container = document.createElement("div");
-    container.id = "chatbot-widget-container";
-    document.body.appendChild(container);
-
-    ReactDOM.createRoot(container).render(<ChatWidget {...options} />);
+    const el = document.createElement("div");
+    el.id = "chatbot-widget-container";
+    document.body.appendChild(el);
+    ReactDOM.createRoot(el).render(<ChatWidget {...options} />);
   },
 };
