@@ -2,10 +2,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import ChatWidget from "./components/ChatWidget";
-import "./widget.css"; // volitelné styly (můžeš smazat, pokud nepoužíváš)
+import "./widget.css";
 
-// 🔴 PŘÍMÉ vložení ChatWidget do DOM – bez wrapperu nebo kontejneru
-const root = document.createElement("div");
-document.body.appendChild(root);
+// 🔁 Musí vytvořit globální objekt, který najde HTML přes <script>
+window.ChatbotWidget = {
+  init: (options = {}) => {
+    if (document.getElementById("chatbot-widget-container")) return;
 
-ReactDOM.createRoot(root).render(<ChatWidget />);
+    const el = document.createElement("div");
+    el.id = "chatbot-widget-container";
+    document.body.appendChild(el);
+
+    ReactDOM.createRoot(el).render(<ChatWidget {...options} />);
+  },
+};
