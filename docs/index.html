@@ -1,65 +1,11 @@
 <!DOCTYPE html>
 <html lang="cs">
-<head>
-  <meta charset="UTF-8" />
-  <title>AI Chatbot Widget – Demo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- ✅ React knihovny z CDN -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
-  <!-- 🟩 Chatbot widget ze statického GitHub Pages (funguje i z jiných domén) -->
-  <script src="https://lakyn80.github.io/ai_chatbot_widget/chat-widget.js" defer></script>
-
-  <!-- ✅ Inicializace widgetu po načtení stránky -->
-  <script defer>
-    window.addEventListener("DOMContentLoaded", () => {
-      if (window.ChatbotWidget && typeof window.ChatbotWidget.init === "function") {
-        window.ChatbotWidget.init({
-          // 🔗 Správná adresa API backendu
-          apiBaseUrl: "https://aichatbotwidget-production.up.railway.app",
-
-          // 🎨 Nastavení vzhledu a textů
-          title: "💬 Náramková Móda",
-          introMessage: "Ahoj! Potřebuješ poradit s výběrem náramku?",
-          themeColor: "#ec4899",  // růžová barva
-          placeholderText: "Zeptej se na produkt, styl nebo dopravu..."
-        });
-        console.log("✅ ChatbotWidget spuštěn.");
-      } else {
-        console.error("❌ ChatbotWidget není dostupný.");
-      }
-    });
-  </script>
-
-  <!-- ✅ Styl pro demo stránku -->
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      background-color: #f9fafb;
-    }
-
-    h1 {
-      font-size: 2rem;
-      color: #ec4899;
-    }
-
-    .info {
-      margin-top: 1rem;
-      background: #fce7f3;
-      padding: 1rem;
-      border-left: 4px solid #ec4899;
-      border-radius: 6px;
-    }
-  </style>
-</head>
-<body>
-  <h1>🎀 AI Chatbot – Náramková Móda</h1>
-  <p>Vpravo dole se objeví růžová bublina s AI asistentem.</p>
-  <div class="info">
-    Tento widget je načtený z <code>https://lakyn80.github.io/ai_chatbot_widget/chat-widget.js</code> a komunikuje s API na Railway.
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Chatbot Widget</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
+  </body>
 </html>

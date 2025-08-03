@@ -1,7 +1,7 @@
 // 📁 frontend/src/embed.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ChatWidget from "./widget/ChatWidget"; // ✅ nyní používáme zabaleno
+import ChatWidget from "./components/ChatWidget"; // ✅ nyní používáme zabaleno
 
 // 🟢 Globální inicializátor widgetu
 window.ChatbotWidget = {
