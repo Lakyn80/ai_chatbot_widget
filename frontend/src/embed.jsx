@@ -1,10 +1,8 @@
 // 📁 frontend/src/embed.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ChatWidget from "./components/ChatWidget";  // ✅ PŘÍMÝ IMPORT TVÉHO KOMPLETNÍHO CHATU
-import "./index.css"; // nebo "./widget.css" – co používáš
+import ChatWidget from "./components/ChatWidget";
+import "./index.css"; // nebo widget.css
 
-// ⬇️ Přímé vykreslení komponenty bez wrapperu
-const el = document.createElement("div");
-document.body.appendChild(el);
-ReactDOM.createRoot(el).render(<ChatWidget />);
+// 🔥 PŘÍMÝ RENDER do <body> – BEZ DIVU
+ReactDOM.createRoot(document.body).render(<ChatWidget />);
