@@ -7,20 +7,28 @@ import autoprefixer from "autoprefixer";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/ai_chatbot_widget/", // 👈 důležité pro GitHub Pages
+  base: "/ai_chatbot_widget/",
   css: {
     postcss: {
       plugins: [tailwindcss(), autoprefixer()],
     },
   },
+  define: {
+    'process.env.NODE_ENV': '"production"', // ✅ Fix pro ReferenceError
+  },
   build: {
-    outDir: "../docs", // ✅ složka, kterou GitHub Pages zobrazí
+    outDir: "../docs",
     emptyOutDir: true,
     lib: {
       entry: path.resolve(__dirname, "src/embed.jsx"),
       name: "ChatbotWidget",
-      fileName: "chat-widget",
       formats: ["iife"],
+      fileName: () => "chat-widget.js",
+    },
+    rollupOptions: {
+      output: {
+        entryFileNames: "chat-widget.js",
+      },
     },
   },
 });
