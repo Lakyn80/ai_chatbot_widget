@@ -1,0 +1,10 @@
+/* 📁 frontend/src/widget.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#chatbot-widget-container {
+  font-family: 'Segoe UI', sans-serif;
+  animation: fade-in 0.3s ease-in-out;
+  z-index: 9999;
+}

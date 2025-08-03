@@ -2,43 +2,18 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import tailwindcss from "tailwindcss";
-import autoprefixer from "autoprefixer";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/ai_chatbot_widget/", // ✅ cesta pro GitHub Pages
-
-  css: {
-    postcss: {
-      plugins: [tailwindcss(), autoprefixer()],
-    },
-  },
-
+  base: "/ai_chatbot_widget/",
   build: {
-    outDir: "../docs",       // ✅ build jde do složky /docs
-    emptyOutDir: false,      // ✅ nechá tam tvůj vlastní index.html naživu
-    sourcemap: true,         // 🟢 zdroj mapy pro ladění
-
+    outDir: "../docs", // GitHub Pages čte /docs
+    emptyOutDir: true,
     lib: {
-      entry: path.resolve(__dirname, "src/embed.jsx"), // ✅ vstup = React widget
-      name: "ChatbotWidget",                           // ✅ název globální proměnné
-      fileName: () => "chat-widget.js",                // ✅ výstupní název souboru
-      formats: ["umd"],                                // ✅ univerzální modul pro <script>
+      entry: path.resolve(__dirname, "src/embed.jsx"),
+      name: "ChatbotWidget",
+      fileName: "chat-widget",
+      formats: ["iife"],
     },
-
-    rollupOptions: {
-      external: ["react", "react-dom"], // ✅ nebalíme React – načítá se z CDN
-      output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-        },
-      },
-    },
-  },
-
-  define: {
-    "process.env.NODE_ENV": '"production"',
   },
 });

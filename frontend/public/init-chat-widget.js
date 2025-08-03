@@ -1,15 +1,20 @@
-// 🟩 Tento skript počká, až bude stránka načtená a pak spustí widget
+// 📁 frontend/public/init-chat-widget.js
+
+// 🟩 Počkej, až bude celý dokument načtený
 window.addEventListener("DOMContentLoaded", () => {
-  // ✅ Ověření existence funkce
+  // ✅ Ověříme, že globální objekt a init funkce existují
   if (window.ChatbotWidget && typeof window.ChatbotWidget.init === "function") {
-    // ✅ Zavolání s konfigurací
+
+    // 🟨 Spuštění widgetu s vlastní konfigurací
     window.ChatbotWidget.init({
-      apiBaseUrl: "https://aichatbotwidget-production.up.railway.app",  // 🔗 adresa backendu (Railway)
-      themeColor: "#ff66aa",  // 🎨 růžová barva pro Náramková Móda
-      welcomeMessage: "Ahoj! Potřebuješ poradit s výběrem náramku?",  // 💬 přivítání
-      placeholderText: "Zeptej se třeba na cenu, styl nebo doručení..." // 📝 výchozí text
+      apiBaseUrl: "https://aichatbotwidget-production.up.railway.app",  // 🔗 Backendová API adresa
+      themeColor: "#ff66aa",                                             // 🎨 Růžová barva pro značku
+      title: "💎 Náramková Móda",                                        // 🧾 Nadpis chatu
+      introMessage: "Ahoj! Ráda ti pomohu vybrat ten pravý náramek 💬", // 🗨️ Úvodní zpráva od bota
     });
+
   } else {
-    console.error("❌ ChatbotWidget.init not found.");
+    // ❌ Vypíše chybu, pokud widget nebyl správně načten
+    console.error("❌ ChatbotWidget.init not found. Možná chybí chat-widget.js?");
   }
 });
