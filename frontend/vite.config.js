@@ -7,15 +7,16 @@ import autoprefixer from "autoprefixer";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/ai_chatbot_widget/",
+  base: "/ai_chatbot_widget/", // ✅ GitHub Pages base path
   css: {
     postcss: {
       plugins: [tailwindcss(), autoprefixer()],
     },
   },
   build: {
-    outDir: "../docs",
-    emptyOutDir: false,
+    outDir: "../docs",         // ✅ Vygeneruje do /docs
+    emptyOutDir: true,         // ✅ Smaže předchozí build
+    sourcemap: true,           // 🟢 Volitelně pro ladění
     lib: {
       entry: path.resolve(__dirname, "src/embed.jsx"),
       name: "ChatbotWidget",
