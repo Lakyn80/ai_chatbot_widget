@@ -7,14 +7,14 @@ import autoprefixer from "autoprefixer";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/ai_chatbot_widget/",
+  base: "/ai_chatbot_widget/", // ✅ pro GitHub Pages
   css: {
     postcss: {
       plugins: [tailwindcss(), autoprefixer()],
     },
   },
   define: {
-    'process.env.NODE_ENV': '"production"', // ✅ Fix pro ReferenceError
+    'process.env.NODE_ENV': '"production"', // ✅ fix pro process undefined
   },
   build: {
     outDir: "../docs",
